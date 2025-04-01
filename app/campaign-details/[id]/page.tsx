@@ -13,6 +13,8 @@ import contract from '@/app/libs/Contract';
 import { useReadContract } from 'thirdweb/react';
 
 const CampaignDetails = () => {
+  const [imageError, setImageError] = useState(false);
+
   const params = useParams();
   const router = useRouter();
   const { findCampaign } = useStateContext();
@@ -47,8 +49,6 @@ const CampaignDetails = () => {
   };
 
   const donators = convertRawDonators(rawDonators as unknown as [[], []]);
-
-  console.log('donators', donators);
 
   const hasDonators = donators && donators?.length > 0;
 
@@ -87,12 +87,13 @@ const CampaignDetails = () => {
       <div className='w-full flex md:flex-row flex-col mt-10 gap-[30px]'>
         <div className='flex-1 flex-col'>
           <Image
-            src={campaign.image}
+            src={imageError ? '/web3.jpg' : campaign.image}
             alt='campaign'
             width={410}
             height={410}
             className='object-cover rounded-xl'
             loader={customLoader}
+            onError={() => setImageError(true)}
           />
           <div className='relative w-full h-[5px] bg-[#3a3a43] mt-2'>
             <div

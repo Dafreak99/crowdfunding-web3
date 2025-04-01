@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { customLoader, daysLeft } from '../utils';
 import Image from 'next/image';
@@ -19,6 +19,7 @@ const FundCard = ({
   image,
   handleClick,
 }: FundCardProps) => {
+  const [imageError, setImageError] = useState(false);
   const remainingDays = daysLeft(Number(deadline));
 
   return (
@@ -27,12 +28,13 @@ const FundCard = ({
       onClick={handleClick}
     >
       <Image
-        src={image}
+        src={imageError ? '/web3.jpg' : image}
         alt='fund'
         width={300}
         height={150}
         className='w-[300px] h-[150px] object-contain rounded-[15px]'
         loader={customLoader}
+        onError={() => setImageError(true)}
       />
 
       <div className='flex flex-col p-4'>
